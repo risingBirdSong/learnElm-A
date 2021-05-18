@@ -26,11 +26,13 @@ import Http
 
 -- MAIN
 
-
 main =
-  Browser.sandbox { init = init, update = update, view = view }
-
-
+  Browser.element
+    { init = \flags -> ([], Cmd.none)
+    , update = update
+    , subscriptions = \_ -> Sub.none
+    , view = view
+    }
 
 -- MODEL
 
@@ -48,20 +50,38 @@ init =
 -- UPDATE
 
 
+url : String
+url = "http://localhost:3000/simple" 
+
+type Error
+    = BadUrl String
+    | Timeout
+    | NetworkError
+    | BadStatus Int
+    | BadBody String
+
 type Msg
   = Simple String
-    | Submit
+    | SendHttpRequest
+    | DataReceived (Result Error String)
 
 
 
 
-update : Msg -> Model -> Model
+getSimple : Cmd Msg
+getSimple =
+    Http.get
+        { url = url
+        , expect = Http.expectString DataReceived
+        }
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
-    Simple val ->
-      { model | value = val }
-    Submit ->
-      {model | value = "starting", submitted = model.value }
+    SendHttpRequest ->
+      ( model , getSimple )
+ 
 
 
 
@@ -73,7 +93,7 @@ view : Model -> Html Msg
 view model =
   div []
     [ viewInput "text" model.value model.value Simple
-        , button [ onClick (Submit) ] [ text "asdfds" ],
+        , button [ onClick (SendHttpRequest) ] [ text "asdfds" ],
         div [] [text model.submitted]
     ]
 
