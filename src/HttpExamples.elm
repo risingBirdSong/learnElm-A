@@ -7,7 +7,12 @@ import Html.Events exposing (onClick)
 import Browser
 import Http
 
+-- Simple {value : String, id : Number}
 
+type alias Point =
+  { x : Float
+  , y : Float
+  }
 
 type alias Model =
     List String
