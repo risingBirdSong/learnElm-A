@@ -6132,7 +6132,9 @@ var $author$project$Main$update = F2(
 		} else {
 			if (msg.a.$ === 'Ok') {
 				var jsonlist = msg.a.a;
-				return _Utils_Tuple2(jsonlist, $elm$core$Platform$Cmd$none);
+				return _Utils_Tuple2(
+					{myint: 2, mystr: jsonlist},
+					$elm$core$Platform$Cmd$none);
 			} else {
 				var e = msg.a.a;
 				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
@@ -6181,7 +6183,15 @@ var $author$project$Main$view = function (model) {
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text(model)
+						$elm$html$Html$text(model.mystr)
+					])),
+				A2(
+				$elm$html$Html$h3,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(
+						$elm$core$String$fromInt(model.myint))
 					])),
 				A2(
 				$elm$html$Html$button,
@@ -6198,7 +6208,9 @@ var $author$project$Main$view = function (model) {
 var $author$project$Main$main = $elm$browser$Browser$element(
 	{
 		init: function (flags) {
-			return _Utils_Tuple2('start', $elm$core$Platform$Cmd$none);
+			return _Utils_Tuple2(
+				{myint: 1, mystr: 'start'},
+				$elm$core$Platform$Cmd$none);
 		},
 		subscriptions: function (_v0) {
 			return $elm$core$Platform$Sub$none;
